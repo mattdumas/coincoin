@@ -1,6 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'idea'
 
-sourceCompatibility = 1.5
+sourceCompatibility = 1.8
 version = '1.0'
 
 repositories {
@@ -8,5 +9,9 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'org.glassfish.jersey:jersey-bom:2.13'
+    compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.13'
+
+    testCompile 'org.testng:testng:6.8.8'
+    testCompile 'org.assertj:assertj-core:1.7.0'
 }
