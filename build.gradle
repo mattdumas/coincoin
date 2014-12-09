@@ -11,6 +11,7 @@ repositories {
 dependencies {
     compile 'org.glassfish.jersey:jersey-bom:2.13'
     compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.13'
+    compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.13'
 
     testCompile 'org.testng:testng:6.8.8'
     testCompile 'org.assertj:assertj-core:1.7.0'

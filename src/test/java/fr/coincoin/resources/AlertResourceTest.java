@@ -2,8 +2,8 @@ package fr.coincoin.resources;
 
 import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.util.HttpStatus;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -15,7 +15,10 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 
 public class AlertResourceTest {
 
@@ -41,10 +44,28 @@ public class AlertResourceTest {
         assertThat(responseMsg).isEqualTo("Coincoin!");
     }
     
-    @Test(enabled = false)
+    @Test
     public void should_post_alert() {
-        Response response = target.path("alerts").request().post(Entity.entity(new Alert(), MediaType.APPLICATION_JSON_TYPE));
-        assertThat(response.getEntity()).isNotNull();
+        Alert alert = new Alert();
+        alert.setName("name");
+        alert.setUrl("url");
+        alert.setEmail("email");
+        alert.setFrequency(60);
+
+        Entity<Alert> entity = entity(alert, MediaType.APPLICATION_JSON_TYPE);
+
+        Response response = target.path("alerts").request().post(entity);
+
+        Alert content = response.readEntity(Alert.class);
+
+        assertThat(response.getStatus()).isEqualTo(CREATED.getStatusCode());
+        assertThat(response.getLocation().toString()).isEqualTo("http://localhost:8080/coincoin/alerts/" + content.getId());
+
+        assertThat(content.getId()).isNotEmpty();
+        assertThat(content.getName()).isEqualTo("name");
+        assertThat(content.getUrl()).isEqualTo("url");
+        assertThat(content.getEmail()).isEqualTo("email");
+        assertThat(content.getFrequency()).isEqualTo(60);
     }
 
 }
