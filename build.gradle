@@ -36,3 +36,7 @@ test {
         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
     }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
