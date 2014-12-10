@@ -2,10 +2,9 @@ package fr.coincoin.resources;
 
 import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.util.HttpStatus;
-import org.testng.annotations.AfterMethod;
+import fr.coincoin.testng.listener.GrizzlySuiteListener;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import javax.ws.rs.client.Client;
@@ -18,24 +17,16 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.contentOf;
 
+@Listeners({GrizzlySuiteListener.class})
 public class AlertResourceTest {
 
-    private HttpServer server;
     private WebTarget target;
 
     @BeforeMethod
     public void setUp() throws Exception {
-        server = Main.startServer();
-
         Client c = ClientBuilder.newClient();
         target = c.target(Main.BASE_URI);
-    }
-
-    @AfterMethod
-    public void tearDown() throws Exception {
-        server.shutdownNow();
     }
 
     @Test
