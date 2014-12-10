@@ -1,13 +1,9 @@
 package fr.coincoin.resource;
 
 
+import fr.coincoin.AlertScheduler;
 import fr.coincoin.domain.Alert;
-import fr.coincoin.job.AlertJob;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.impl.StdSchedulerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -18,15 +14,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
+import static javax.ws.rs.core.Response.created;
 
 @Path("alerts")
 public class AlertResource {
 
     private final Map<String, Alert> alerts = new ConcurrentHashMap<>();
-    private Scheduler scheduler;
+    private AlertScheduler alertScheduler = new AlertScheduler();
 
 
     @GET
@@ -43,29 +37,11 @@ public class AlertResource {
         alert.setId(UUID.randomUUID().toString());
         alerts.putIfAbsent(alert.getId(), alert);
 
-        this.scheduler = StdSchedulerFactory.getDefaultScheduler();
-
-        // define the job and tie it to our HelloJob class
-        JobDetail job = newJob(AlertJob.class)
-                .withIdentity("job1", "group1")
-                .build();
-
-// Trigger the job to run now, and then repeat every 40 seconds
-        Trigger trigger = newTrigger()
-                .withIdentity("trigger1", "group1")
-                .startNow()
-                .withSchedule(simpleSchedule()
-                        .withIntervalInSeconds(alert.getFrequency())
-                        .repeatForever())
-                .build();
-
-// Tell quartz to schedule the job using our trigger
-        scheduler.scheduleJob(job, trigger);
+        alertScheduler.scheduleJob(alert);
 
         URI location = URI.create("/coincoin/alerts/" + alert.getId());
-        return Response.created(location).entity(alert).build();
 
-
+        return created(location).entity(alert).build();
     }
 
 
