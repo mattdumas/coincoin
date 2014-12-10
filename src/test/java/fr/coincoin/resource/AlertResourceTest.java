@@ -1,4 +1,4 @@
-package fr.coincoin.resources;
+package fr.coincoin.resource;
 
 import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
