@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 
 sourceCompatibility = 1.8
 version = '1.0'
@@ -19,6 +21,8 @@ dependencies {
     testCompile 'org.testng:testng:6.8.8'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.mock-server:mockserver-netty:3.9.1'
+
+    classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
 }
 
 test {
@@ -36,6 +40,13 @@ test {
     // listen to standard out and standard error of the test JVM(s)
     onOutput { descriptor, event ->
         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+        html.enabled = true
     }
 }
 
