@@ -45,7 +45,7 @@ public class MailServiceTest {
     }
 
 
-    @Test
+    @Test(enabled = false)
     public void should_send_email() throws Exception {
         // Given
         Alert alert = new Alert();
