@@ -1,15 +1,14 @@
 package fr.coincoin.parser;
 
 import fr.coincoin.domain.Ad;
+import fr.coincoin.test.FileUtils;
 import fr.coincoin.testng.listener.MockServerSuiteListener;
 import org.mockserver.client.server.MockServerClient;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockserver.model.HttpRequest.request;
@@ -62,16 +61,9 @@ public class AdsParserTest {
             .respond(
                 response()
                     .withStatusCode(200)
-                    .withBody(toString(AdsParserTest.class.getResourceAsStream("/lbc_sample.html")))
+                    .withBody(FileUtils.toString(AdsParserTest.class.getResourceAsStream("/lbc_sample.html")))
             );
     }
-
-
-    private static String toString(InputStream stream) {
-        Scanner s = new Scanner(stream).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
-
 
 
 }

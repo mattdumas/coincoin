@@ -17,6 +17,7 @@ dependencies {
     compile 'org.quartz-scheduler:quartz:2.2.1'
     compile 'org.quartz-scheduler:quartz-jobs:2.2.1'
     compile 'org.jsoup:jsoup:1.7.2'
+    compile 'com.github.jknack:handlebars:2.0.0'
 
     testCompile 'org.testng:testng:6.8.8'
     testCompile 'org.assertj:assertj-core:1.7.0'
