@@ -1,7 +1,5 @@
 package fr.coincoin.domain;
 
-import java.math.BigDecimal;
-
 public class Ad {
 
     private String name;
@@ -12,9 +10,9 @@ public class Ad {
 
     private String imageUrl;
 
-    private Ad() {
 
-    }
+    private Ad() {}
+
 
     public String getName() {
         return name;
@@ -31,6 +29,7 @@ public class Ad {
     public String getImageUrl() {
         return imageUrl;
     }
+
 
     public static class Builder {
 
@@ -63,4 +62,6 @@ public class Ad {
             return ad;
         }
     }
+
+
 }

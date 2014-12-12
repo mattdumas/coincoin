@@ -1,6 +1,5 @@
-package fr.coincoin.Builder;
+package fr.coincoin.builder;
 
-import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import fr.coincoin.domain.Ad;
@@ -14,6 +13,8 @@ public class MailBuilder {
 
     public MailBuilder() {
         Handlebars handlebars = new Handlebars();
+        handlebars.setPrettyPrint(true);
+
         try {
             template = handlebars.compile("alerts");
         } catch (IOException e) {
@@ -21,8 +22,10 @@ public class MailBuilder {
         }
     }
 
-    public String generateEmail(List<Ad> ads) throws IOException {
+
+    public String build(List<Ad> ads) throws IOException {
         return template.apply(ads);
     }
+
 
 }
