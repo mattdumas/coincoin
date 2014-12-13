@@ -6,6 +6,9 @@ import com.google.inject.Provides;
 import com.google.inject.servlet.ServletModule;
 import fr.coincoin.AlertScheduler;
 import fr.coincoin.job.GuiceJobFactory;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.spi.JobFactory;
 
 import javax.inject.Singleton;
@@ -20,6 +23,16 @@ public class CoinCoinGuiceModule extends ServletModule {
         bind(JobFactory.class).to(GuiceJobFactory.class).in(Singleton.class);
     }
 
+
+    @Provides
+    public Scheduler scheduler(JobFactory jobFactory) throws SchedulerException {
+        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        scheduler.setJobFactory(jobFactory);
+
+        scheduler.start();
+
+        return scheduler;
+    }
 
     @Provides
     public Handlebars handlebars() {

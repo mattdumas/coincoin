@@ -1,11 +1,8 @@
 package fr.coincoin;
 
-import com.google.inject.Injector;
 import fr.coincoin.domain.Alert;
 import fr.coincoin.job.AlertJob;
 import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.spi.JobFactory;
 
 import javax.inject.Inject;
 
@@ -15,14 +12,12 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 public class AlertScheduler {
 
-    private final Injector injector;
     private final Scheduler scheduler;
 
 
     @Inject
-    public AlertScheduler(Injector injector) {
-        this.injector = injector;
-        this.scheduler = createScheduler();
+    public AlertScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
     }
 
 
@@ -39,21 +34,6 @@ public class AlertScheduler {
                                       .build();
 
         scheduler.scheduleJob(job, trigger);
-    }
-
-
-    private Scheduler createScheduler() {
-        try {
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-            scheduler.setJobFactory(injector.getInstance(JobFactory.class));
-
-            scheduler.start();
-
-            return scheduler;
-        }
-        catch (SchedulerException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 

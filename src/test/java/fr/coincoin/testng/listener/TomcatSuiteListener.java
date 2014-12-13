@@ -1,8 +1,6 @@
 package fr.coincoin.testng.listener;
 
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.core.AprLifecycleListener;
-import org.apache.catalina.core.StandardServer;
 import org.apache.catalina.startup.Tomcat;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
@@ -22,7 +20,7 @@ public class TomcatSuiteListener implements ISuiteListener {
     public void onStart(ISuite suite) {
         tomcat = new Tomcat();
         tomcat.setPort(8080);
-        tomcat.setBaseDir("build");
+        tomcat.setBaseDir("build"); // put Tomcat temps files into gradle build directory
 
         try {
             tomcat.addWebapp("/coincoin", new File("src/main/webapp").getAbsolutePath());
