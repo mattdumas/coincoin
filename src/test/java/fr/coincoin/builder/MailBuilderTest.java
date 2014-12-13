@@ -1,19 +1,23 @@
 package fr.coincoin.builder;
 
+import fr.coincoin.configuration.guice.CoinCoinGuiceModule;
 import fr.coincoin.domain.Ad;
 import fr.coincoin.test.FileUtils;
+import org.testng.annotations.Guice;
 import org.testng.annotations.Test;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Guice(modules = CoinCoinGuiceModule.class)
 public class MailBuilderTest {
 
-    private MailBuilder mailBuilder = new MailBuilder();
-
+    @Inject
+    private MailBuilder mailBuilder;
 
     @Test
     public void should_build() throws IOException {

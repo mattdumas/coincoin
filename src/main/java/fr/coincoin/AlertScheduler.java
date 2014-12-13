@@ -1,12 +1,13 @@
 package fr.coincoin;
 
+import com.google.inject.Injector;
 import fr.coincoin.domain.Alert;
 import fr.coincoin.job.AlertJob;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.spi.JobFactory;
+
+import javax.inject.Inject;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -14,34 +15,43 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 public class AlertScheduler {
 
-    private Scheduler scheduler;
+    private final Injector injector;
+    private final Scheduler scheduler;
 
-    public AlertScheduler() {
-        initScheduler();
+
+    @Inject
+    public AlertScheduler(Injector injector) {
+        this.injector = injector;
+        this.scheduler = createScheduler();
     }
 
 
     public void scheduleJob(Alert alert) throws SchedulerException {
         JobDetail job = newJob(AlertJob.class).withIdentity("job-" + alert.getId(), "alertGroup").build();
 
+        JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put("alert", alert);
+
         Trigger trigger = newTrigger().withIdentity("trigger-" + alert.getId(), "alertGroup")
                                       .startNow()
-                                      .withSchedule(simpleSchedule().withIntervalInSeconds(alert.getFrequency())
-                                              .repeatForever())
-                                      .usingJobData("name", alert.getName())
-                                      .usingJobData("email", alert.getEmail())
-                                      .usingJobData("url", alert.getUrl())
+                                      .withSchedule(simpleSchedule().withIntervalInMinutes(alert.getFrequency()).repeatForever())
+                                      .usingJobData(jobDataMap)
                                       .build();
 
         scheduler.scheduleJob(job, trigger);
     }
 
 
-    private void initScheduler() {
+    private Scheduler createScheduler() {
         try {
-            scheduler = StdSchedulerFactory.getDefaultScheduler();
+            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+            scheduler.setJobFactory(injector.getInstance(JobFactory.class));
+
             scheduler.start();
-        } catch (SchedulerException e) {
+
+            return scheduler;
+        }
+        catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
     }

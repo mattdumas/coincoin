@@ -50,4 +50,16 @@ public class Alert {
     }
 
 
+    @Override
+    public String toString() {
+        return "Alert{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", email='" + email + '\'' +
+                ", frequency=" + frequency +
+                '}';
+    }
+
+
 }

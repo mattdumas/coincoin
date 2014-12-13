@@ -1,9 +1,9 @@
 package fr.coincoin.builder;
 
-import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import fr.coincoin.domain.Ad;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 
@@ -11,15 +11,9 @@ public class MailBuilder {
 
     private final Template template;
 
-    public MailBuilder() {
-        Handlebars handlebars = new Handlebars();
-        handlebars.setPrettyPrint(true);
-
-        try {
-            template = handlebars.compile("alerts");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    @Inject
+    public MailBuilder(Template template) {
+        this.template = template;
     }
 
 

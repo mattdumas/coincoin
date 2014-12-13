@@ -5,6 +5,7 @@ import fr.coincoin.AlertScheduler;
 import fr.coincoin.domain.Alert;
 import org.quartz.SchedulerException;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -20,7 +21,13 @@ import static javax.ws.rs.core.Response.created;
 public class AlertResource {
 
     private final Map<String, Alert> alerts = new ConcurrentHashMap<>();
-    private AlertScheduler alertScheduler = new AlertScheduler();
+    private final AlertScheduler alertScheduler;
+
+
+    @Inject
+    public AlertResource(AlertScheduler alertScheduler) {
+        this.alertScheduler = alertScheduler;
+    }
 
 
     @GET

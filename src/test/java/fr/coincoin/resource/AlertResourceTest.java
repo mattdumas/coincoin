@@ -2,7 +2,7 @@ package fr.coincoin.resource;
 
 import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
-import fr.coincoin.testng.listener.GrizzlySuiteListener;
+import fr.coincoin.testng.listener.TomcatSuiteListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -18,25 +18,33 @@ import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Listeners({GrizzlySuiteListener.class})
+@Listeners(TomcatSuiteListener.class)
 public class AlertResourceTest {
 
     private WebTarget target;
 
+
     @BeforeMethod
     public void setUp() throws Exception {
-        Client c = ClientBuilder.newClient();
-        target = c.target(Main.BASE_URI);
+        Client client = ClientBuilder.newClient();
+        target = client.target(Main.BASE_URI);
     }
+
 
     @Test
     public void should_coincoin() {
-        String responseMsg = target.path("alerts").request().get(String.class);
+        // Given
+
+        // When
+        String responseMsg = target.path("api/alerts").request().get(String.class);
+
+        // Then
         assertThat(responseMsg).isEqualTo("Coincoin!");
     }
     
     @Test
     public void should_post_alert() {
+        // Given
         Alert alert = new Alert();
         alert.setName("name");
         alert.setUrl("url");
@@ -45,8 +53,10 @@ public class AlertResourceTest {
 
         Entity<Alert> entity = entity(alert, MediaType.APPLICATION_JSON_TYPE);
 
-        Response response = target.path("alerts").request().post(entity);
+        // When
+        Response response = target.path("api/alerts").request().post(entity);
 
+        // Then
         Alert content = response.readEntity(Alert.class);
 
         assertThat(response.getStatus()).isEqualTo(CREATED.getStatusCode());
@@ -58,5 +68,6 @@ public class AlertResourceTest {
         assertThat(content.getEmail()).isEqualTo("email");
         assertThat(content.getFrequency()).isEqualTo(60);
     }
+
 
 }

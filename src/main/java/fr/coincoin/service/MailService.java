@@ -7,14 +7,17 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.List;
 
+@Singleton
 public class MailService {
 
     private final MailBuilder mailBuilder;
 
-
+    @Inject
     public MailService(MailBuilder mailBuilder) {
         this.mailBuilder = mailBuilder;
     }
