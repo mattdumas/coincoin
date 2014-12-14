@@ -26,7 +26,7 @@ public class GuiceInjectorServletContextListener extends GuiceServletContextList
 
         Scheduler scheduler = injector.getInstance(Scheduler.class);
         try {
-            scheduler.shutdown();
+            scheduler.shutdown(true);
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
