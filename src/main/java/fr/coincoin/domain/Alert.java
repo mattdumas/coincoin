@@ -1,6 +1,8 @@
 package fr.coincoin.domain;
 
-public class Alert {
+import java.io.Serializable;
+
+public class Alert implements Serializable {
 
     private String id;
     private String name;

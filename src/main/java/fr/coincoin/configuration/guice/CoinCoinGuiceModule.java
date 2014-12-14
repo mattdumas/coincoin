@@ -55,7 +55,7 @@ public class CoinCoinGuiceModule extends ServletModule {
 
     @Provides
     public Template template() throws IOException {
-        return handlebars().compile("alerts");
+        return handlebars().compile("templates/alerts");
     }
 
 
