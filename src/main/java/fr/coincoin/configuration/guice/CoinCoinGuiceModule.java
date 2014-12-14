@@ -59,17 +59,4 @@ public class CoinCoinGuiceModule extends ServletModule {
     }
 
 
-    private Properties getProperties() {
-        Properties properties = new Properties();
-
-        try {
-            properties.load(getClass().getResourceAsStream("/coincoin.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return properties;
-    }
-
-
 }
