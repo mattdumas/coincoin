@@ -36,7 +36,7 @@ public class CoinCoinGuiceModule extends ServletModule {
     }
 
 
-    @Provides
+    @Provides @Singleton
     public Scheduler scheduler(JobFactory jobFactory) throws SchedulerException {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.setJobFactory(jobFactory);
