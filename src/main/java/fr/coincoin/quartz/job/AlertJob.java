@@ -1,4 +1,4 @@
-package fr.coincoin.job;
+package fr.coincoin.quartz.job;
 
 import fr.coincoin.domain.Ad;
 import fr.coincoin.domain.Alert;

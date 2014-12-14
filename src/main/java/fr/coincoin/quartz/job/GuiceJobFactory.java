@@ -1,4 +1,4 @@
-package fr.coincoin.job;
+package fr.coincoin.quartz.job;
 
 import com.google.inject.Injector;
 import org.quartz.Job;

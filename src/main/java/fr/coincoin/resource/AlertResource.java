@@ -1,7 +1,7 @@
 package fr.coincoin.resource;
 
 
-import fr.coincoin.AlertScheduler;
+import fr.coincoin.quartz.AlertScheduler;
 import fr.coincoin.domain.Alert;
 import org.quartz.SchedulerException;
 

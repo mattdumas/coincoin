@@ -1,7 +1,7 @@
-package fr.coincoin;
+package fr.coincoin.quartz;
 
 import fr.coincoin.domain.Alert;
-import fr.coincoin.job.AlertJob;
+import fr.coincoin.quartz.job.AlertJob;
 import org.quartz.*;
 
 import javax.inject.Inject;
