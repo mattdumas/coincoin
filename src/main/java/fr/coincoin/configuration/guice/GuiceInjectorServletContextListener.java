@@ -2,6 +2,7 @@ package fr.coincoin.configuration.guice;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Stage;
 import com.google.inject.servlet.GuiceServletContextListener;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -15,7 +16,7 @@ public class GuiceInjectorServletContextListener extends GuiceServletContextList
 
     @Override
     protected Injector getInjector() {
-        injector = Guice.createInjector(new CoinCoinGuiceModule());
+        injector = Guice.createInjector(Stage.PRODUCTION, new CoinCoinGuiceModule());
         return injector;
     }
 

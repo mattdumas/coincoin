@@ -10,7 +10,8 @@ import javax.inject.Inject;
 
 /**
  * Not an implementation I'm satisfy of.
- * See https://java.net/jira/browse/JERSEY-1950 & https://java.net/jira/browse/HK2-121 */
+ * See https://java.net/jira/browse/JERSEY-1950 & https://java.net/jira/browse/HK2-121
+ */
 public class CoinCoinApplication extends ResourceConfig {
 
 
