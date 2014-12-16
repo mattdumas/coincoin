@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'war'
-apply plugin: 'jetty'
+apply plugin: 'com.bmuschko.tomcat'
 
 apply plugin: 'idea'
 
@@ -15,10 +15,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.glassfish.jersey:jersey-bom:2.13'
-    compile 'org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.13'
-    compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.13'
-    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.13'
+    def jerseyVersion = '2.13'
+
+    compile "org.glassfish.jersey:jersey-bom:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http:$jerseyVersion"
+    compile "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$jerseyVersion"
 
     compile 'javax.servlet:javax.servlet-api:3.1.0'
 
@@ -40,6 +42,12 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.7'
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
+    def tomcatVersion = '8.0.15'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
+    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
+        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
+    }
 
     testCompile 'org.testng:testng:6.8.8'
 
@@ -51,9 +59,9 @@ dependencies {
 
     testCompile 'com.icegreen:greenmail:1.4.0'
 
-    testCompile 'org.apache.tomcat.embed:tomcat-embed-core:8.0.15'
-    testCompile 'org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.15'
-    testCompile 'org.apache.tomcat.embed:tomcat-embed-jasper:8.0.15'
+    testCompile "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
+    testCompile "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatVersion"
+    testCompile "org.apache.tomcat.embed:tomcat-embed-jasper:$tomcatVersion"
 }
 
 buildscript {
@@ -62,6 +70,7 @@ buildscript {
     }
 
     dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
     }
 }
