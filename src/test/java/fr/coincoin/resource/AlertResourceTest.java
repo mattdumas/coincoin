@@ -2,6 +2,7 @@ package fr.coincoin.resource;
 
 import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
+import fr.coincoin.testng.listener.MockServerSuiteListener;
 import fr.coincoin.testng.listener.TomcatSuiteListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
@@ -18,7 +19,7 @@ import static javax.ws.rs.client.Entity.entity;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Listeners(TomcatSuiteListener.class)
+@Listeners({TomcatSuiteListener.class, MockServerSuiteListener.class})
 public class AlertResourceTest {
 
     private WebTarget target;
@@ -47,8 +48,8 @@ public class AlertResourceTest {
         // Given
         Alert alert = new Alert();
         alert.setName("name");
-        alert.setUrl("url");
-        alert.setEmail("email");
+        alert.setUrl("http://localhost:8888/mock_lbc");
+        alert.setEmail("name@mail.com");
         alert.setFrequency(60);
 
         Entity<Alert> entity = entity(alert, MediaType.APPLICATION_JSON_TYPE);
@@ -64,8 +65,8 @@ public class AlertResourceTest {
 
         assertThat(content.getId()).isNotEmpty();
         assertThat(content.getName()).isEqualTo("name");
-        assertThat(content.getUrl()).isEqualTo("url");
-        assertThat(content.getEmail()).isEqualTo("email");
+        assertThat(content.getUrl()).isEqualTo("http://localhost:8888/mock_lbc");
+        assertThat(content.getEmail()).isEqualTo("name@mail.com");
         assertThat(content.getFrequency()).isEqualTo(60);
     }
 
