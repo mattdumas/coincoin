@@ -1,26 +1,13 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1x'
-    }
-}
 
 plugins {
+    id 'java'
+    id 'war'
+    id 'idea'
+    id 'jacoco'
     id "io.spring.dependency-management" version "0.3.1.RELEASE"
+    id 'com.bmuschko.tomcat' version "2.0"
+    id 'com.github.kt3k.coveralls' version "2.0.1x"
 }
-
-apply plugin: 'java'
-apply plugin: 'war'
-apply plugin: 'com.bmuschko.tomcat'
-
-apply plugin: 'idea'
-
-apply plugin: 'jacoco'
-apply plugin: 'com.github.kt3k.coveralls'
 
 sourceCompatibility = 1.8
 version = '1.0'
@@ -34,7 +21,6 @@ dependencyManagement {
         mavenBom 'org.glassfish.jersey:jersey-bom:2.13'
     }
 }
-
 
 dependencies {
     compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http"
