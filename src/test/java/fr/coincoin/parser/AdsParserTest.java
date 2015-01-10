@@ -50,6 +50,32 @@ public class AdsParserTest {
         assertThat(ads.get(2).getPrice()).isEqualTo("175 000 €");
     }
 
+    @Test
+    public void should_parse_when_image_or_price_are_missing() throws IOException {
+        // Given
+        givenLBCExpectations();
+
+        // When
+        List<Ad> ads = parser.parse("http://localhost:8888/lbc_sample_missing_information");
+
+        // Then
+        assertThat(ads).hasSize(35);
+
+        assertThat(ads.get(13).getName()).isEqualTo("Immeuble locatif avec 3 appartements");
+        assertThat(ads.get(13).getUrl()).isEqualTo("http://www.leboncoin.fr/ventes_immobilieres/745190855.htm?ca=12_s");
+        assertThat(ads.get(13).getImageUrl()).isEmpty();
+        assertThat(ads.get(13).getPrice()).isEqualTo("117 500 €");
+
+        assertThat(ads.get(14).getName()).isEqualTo("Maison 5 pieces");
+        assertThat(ads.get(14).getUrl()).isEqualTo("http://www.leboncoin.fr/ventes_immobilieres/744597905.htm?ca=12_s");
+        assertThat(ads.get(14).getImageUrl()).isEmpty();
+        assertThat(ads.get(14).getPrice()).isEqualTo("92 600 €");
+
+        assertThat(ads.get(15).getName()).isEqualTo("Terrain à bâtir rue varmancourt, BLANZY");
+        assertThat(ads.get(15).getUrl()).isEqualTo("http://www.leboncoin.fr/ventes_immobilieres/672007033.htm?ca=12_s");
+        assertThat(ads.get(15).getImageUrl()).isEqualTo("http://193.164.196.50/thumbs/341/34175001130d5fa6b91bbff42b1a78e22eba6a8d.jpg");
+        assertThat(ads.get(15).getPrice()).isEmpty();
+    }
 
     private static void givenLBCExpectations() {
         new MockServerClient("localhost", 8888)
@@ -59,11 +85,21 @@ public class AdsParserTest {
                     .withPath("/mock_lbc")
             )
             .respond(
-                response()
-                    .withStatusCode(200)
-                    .withBody(FileUtils.toString(AdsParserTest.class.getResourceAsStream("/lbc_sample.html")))
+                    response()
+                            .withStatusCode(200)
+                            .withBody(FileUtils.toString(AdsParserTest.class.getResourceAsStream("/lbc_sample.html")))
             );
+
+        new MockServerClient("localhost", 8888)
+            .when(
+                    request()
+                            .withMethod("GET")
+                            .withPath("/lbc_sample_missing_information")
+            )
+                .respond(
+                        response()
+                                .withStatusCode(200)
+                                .withBody(FileUtils.toString(AdsParserTest.class.getResourceAsStream("/lbc_sample_missing_information.html")))
+                );
     }
-
-
 }
