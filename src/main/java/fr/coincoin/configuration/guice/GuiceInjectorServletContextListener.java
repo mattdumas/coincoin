@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 import com.google.inject.servlet.GuiceServletContextListener;
+import org.elasticsearch.node.Node;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 
@@ -31,5 +32,8 @@ public class GuiceInjectorServletContextListener extends GuiceServletContextList
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
         }
+
+        Node node = injector.getInstance(Node.class);
+        node.close();
     }
 }

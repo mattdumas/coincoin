@@ -5,10 +5,12 @@ import com.github.jknack.handlebars.Template;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import com.google.inject.servlet.ServletModule;
-import fr.coincoin.quartz.AlertScheduler;
 import fr.coincoin.configuration.CoinCoinPropertiesConfiguration;
+import fr.coincoin.quartz.AlertScheduler;
 import fr.coincoin.quartz.job.GuiceJobFactory;
 import org.apache.commons.configuration.Configuration;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.Node;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -17,6 +19,8 @@ import org.quartz.spi.JobFactory;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.Properties;
+
+import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 
 public class CoinCoinGuiceModule extends ServletModule {
 
@@ -46,16 +50,26 @@ public class CoinCoinGuiceModule extends ServletModule {
         return scheduler;
     }
 
-    @Provides
+    @Provides @Singleton
     public Handlebars handlebars() {
         Handlebars handlebars = new Handlebars();
         handlebars.setPrettyPrint(true);
         return handlebars;
     }
 
-    @Provides
+    @Provides @Singleton
     public Template template() throws IOException {
         return handlebars().compile("templates/alerts");
+    }
+
+    @Provides @Singleton
+    public Node node() {
+        return nodeBuilder().client(true).node();
+    }
+
+    @Provides @Singleton
+    public Client client(Node node) {
+        return node.client();
     }
 
 

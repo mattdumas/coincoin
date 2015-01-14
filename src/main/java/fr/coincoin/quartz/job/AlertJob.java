@@ -1,8 +1,10 @@
 package fr.coincoin.quartz.job;
 
 import fr.coincoin.domain.Ad;
+import fr.coincoin.domain.Ads;
 import fr.coincoin.domain.Alert;
 import fr.coincoin.parser.AdsParser;
+import fr.coincoin.repository.AdRepository;
 import fr.coincoin.service.MailService;
 import org.apache.commons.mail.EmailException;
 import org.quartz.Job;
@@ -22,11 +24,14 @@ public class AlertJob implements Job {
     private final AdsParser parser;
     private final MailService mailService;
 
+    private final AdRepository adRepository;
+
 
     @Inject
-    public AlertJob(AdsParser parser, MailService mailService) {
+    public AlertJob(AdsParser parser, MailService mailService, AdRepository adRepository) {
         this.parser = parser;
         this.mailService = mailService;
+        this.adRepository = adRepository;
     }
 
 
@@ -38,8 +43,15 @@ public class AlertJob implements Job {
 
         try {
             List<Ad> ads = parser.parse(alert.getUrl());
+
+            Ads wrapper = new Ads();
+            wrapper.setAds(ads);
+
+            adRepository.save(alert.getId(), wrapper);
+
             mailService.sendAds(alert, ads);
-        } catch (IOException | EmailException e) {
+        }
+        catch (IOException | EmailException e) {
             throw new JobExecutionException(e);
         }
     }
