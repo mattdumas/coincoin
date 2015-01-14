@@ -23,7 +23,6 @@ dependencyManagement {
 }
 
 dependencies {
-    compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http"
     compile "org.glassfish.jersey.media:jersey-media-json-jackson"
     compile "org.glassfish.jersey.containers:jersey-container-servlet"
 

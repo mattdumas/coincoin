@@ -1,6 +1,5 @@
 package fr.coincoin.resource;
 
-import fr.coincoin.Main;
 import fr.coincoin.domain.Alert;
 import fr.coincoin.testng.listener.MockServerSuiteListener;
 import fr.coincoin.testng.listener.TomcatSuiteListener;
@@ -28,7 +27,7 @@ public class AlertResourceTest {
     @BeforeMethod
     public void setUp() throws Exception {
         Client client = ClientBuilder.newClient();
-        target = client.target(Main.BASE_URI);
+        target = client.target("http://localhost:8080/coincoin");
     }
 
 
