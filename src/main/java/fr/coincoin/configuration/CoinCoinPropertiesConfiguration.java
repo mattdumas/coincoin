@@ -11,15 +11,19 @@ public class CoinCoinPropertiesConfiguration {
     public Configuration getConfiguration() {
         try {
             CompositeConfiguration configuration = new CompositeConfiguration();
+            SystemConfiguration systemConfiguration = new SystemConfiguration();
+            systemConfiguration.setDelimiterParsingDisabled(true);
+            configuration.addConfiguration(systemConfiguration);
 
-            configuration.addConfiguration(new SystemConfiguration());
-            configuration.addConfiguration(new PropertiesConfiguration("coincoin.properties"));
-
+            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration();
+            propertiesConfiguration.setDelimiterParsingDisabled(true);
+            propertiesConfiguration.load("coincoin.properties");
+            configuration.addConfiguration(propertiesConfiguration);
             return configuration;
-        }
-        catch (ConfigurationException e) {
+        } catch (ConfigurationException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public Properties getProperties(Configuration configuration) {
