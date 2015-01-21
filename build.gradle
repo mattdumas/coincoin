@@ -56,9 +56,13 @@ dependencies {
 
     testCompile 'org.mockito:mockito-all:1.10.8'
 
-    testCompile 'org.mock-server:mockserver-netty:3.9.1'
+    testCompile('org.mock-server:mockserver-netty:3.9.1') {
+        exclude group: 'junit', module: 'junit'
+    }
 
-    testCompile 'com.icegreen:greenmail:1.4.0'
+    testCompile('com.icegreen:greenmail:1.4.0') {
+        exclude group: 'junit', module: 'junit'
+    }
 
     testCompile "org.apache.tomcat.embed:tomcat-embed-core:$tomcatVersion"
     testCompile "org.apache.tomcat.embed:tomcat-embed-logging-juli:$tomcatVersion"
