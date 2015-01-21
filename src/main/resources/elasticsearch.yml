@@ -1,0 +1,10 @@
+cluster:
+    name = coincoin
+
+node:
+    local = true
+    data = true
+
+# Disbale discovery (only one node)
+discovery:
+    initial_state_timeout = 0

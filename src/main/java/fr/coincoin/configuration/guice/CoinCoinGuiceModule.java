@@ -64,7 +64,7 @@ public class CoinCoinGuiceModule extends ServletModule {
 
     @Provides @Singleton
     public Node node() {
-        return nodeBuilder().client(true).node();
+        return nodeBuilder().node();
     }
 
     @Provides @Singleton
